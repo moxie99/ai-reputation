@@ -111,23 +111,39 @@ export default function Home() {
   }
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100'>
-      <div className='container mx-auto px-4 py-8'>
-        {appState === 'search' && <SearchForm onSubmit={handleSearch} />}
+    <div className='min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col'>
+      <div className='flex-1 w-full'>
+        {appState === 'search' && (
+          <div className='h-full flex items-center justify-center p-4 sm:p-6 lg:p-8'>
+            <div className='w-full max-w-2xl'>
+              <SearchForm onSubmit={handleSearch} />
+            </div>
+          </div>
+        )}
 
-        {appState === 'loading' && <SearchProgress progress={searchProgress} />}
+        {appState === 'loading' && (
+          <div className='h-full flex items-center justify-center p-4 sm:p-6 lg:p-8'>
+            <div className='w-full max-w-2xl'>
+              <SearchProgress progress={searchProgress} />
+            </div>
+          </div>
+        )}
 
         {appState === 'report' && report && (
-          <div className='space-y-6'>
-            <div className='text-center'>
-              <button
-                onClick={handleNewSearch}
-                className='bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors'
-              >
-                New Search
-              </button>
+          <div className='w-full'>
+            <div className='sticky top-0 z-10 bg-white/80 backdrop-blur-sm border-b border-gray-200 p-4'>
+              <div className='max-w-4xl mx-auto flex justify-center'>
+                <button
+                  onClick={handleNewSearch}
+                  className='bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors font-medium'
+                >
+                  New Search
+                </button>
+              </div>
             </div>
-            <ReputationReport report={report} />
+            <div className='p-4 sm:p-6 lg:p-8'>
+              <ReputationReport report={report} />
+            </div>
           </div>
         )}
       </div>
