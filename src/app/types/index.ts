@@ -47,7 +47,7 @@ export interface ReputationReport {
     expertise: AnalysisCategory
     credibility: AnalysisCategory
   }
-  overallSummary: string
+  overallSummary: string | null | undefined
   dataSourcesUsed: string[]
   limitations: string[]
 }
