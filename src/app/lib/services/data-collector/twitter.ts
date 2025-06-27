@@ -10,7 +10,7 @@ export class TwitterService {
     accessSecret?: string
   ) {
     const baseClient =
-      accessToken && accessSecret
+      accessToken && accessSecretst
         ? new TwitterApi({
             appKey: process.env.TWITTER_API_KEY!,
             appSecret: process.env.TWITTER_API_SECRET!,
@@ -25,18 +25,22 @@ export class TwitterService {
 
   async searchUsers(query: string) {
     try {
-      const users = await this.client.v2.searchUsers(query, {
-        'user.fields': [
-          'created_at',
-          'description',
-          'location',
-          'public_metrics',
-          'verified',
-          'profile_image_url',
-        ],
-      })
+      // const users = await this.client.v2.searchUsers(query, {
+      //   'user.fields': [
+      //     'created_at',
+      //     'description',
+      //     'location',
+      //     'public_metrics',
+      //     'verified',
+      //     'profile_image_url',
+      //   ],
+      // })
 
-      return users.data?.map((user: any) => this.normalizeUserData(user)) || []
+      // return users.data?.map((user: any) => this.normalizeUserData(user)) || []
+    const users = await this.client.v1.searchUsers(query);
+
+    return users.map((user: any) => this.normalizeUserData(user)) || [];
+
     } catch (error) {
       console.error('Twitter user search error:', error)
       throw new Error('Failed to search Twitter users')
@@ -123,20 +127,41 @@ export class TwitterService {
   }
 
   private normalizeUserData(userData: any) {
+    // return {
+    //   platform: 'Twitter',
+    //   type: 'profile',
+    //   content: {
+    //     username: userData.username,
+    //     name: userData.name,
+    //     description: userData.description,
+    //     location: userData.location,
+    //     verified: userData.verified,
+    //     metrics: userData.public_metrics,
+    //     profileImageUrl: userData.profile_image_url,
+    //     createdAt: userData.created_at,
+    //   },
+    //   url: `https://twitter.com/${userData.username}`,
+    //   timestamp: new Date().toISOString(),
+    //   source: 'twitter_api',
+    // }
     return {
       platform: 'Twitter',
       type: 'profile',
       content: {
-        username: userData.username,
+        username: userData.screen_name,
         name: userData.name,
         description: userData.description,
         location: userData.location,
         verified: userData.verified,
-        metrics: userData.public_metrics,
-        profileImageUrl: userData.profile_image_url,
+        metrics: {
+          followers_count: userData.followers_count,
+          friends_count: userData.friends_count,
+          statuses_count: userData.statuses_count,
+        },
+        profileImageUrl: userData.profile_image_url_https,
         createdAt: userData.created_at,
       },
-      url: `https://twitter.com/${userData.username}`,
+      url: `https://twitter.com/${userData.screen_name}`,
       timestamp: new Date().toISOString(),
       source: 'twitter_api',
     }
