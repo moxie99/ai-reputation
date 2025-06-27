@@ -39,7 +39,7 @@ export class TwitterService {
       // return users.data?.map((user: any) => this.normalizeUserData(user)) || []
     const users = await this.client.v1.searchUsers(query);
 
-    return users.map((user: any) => this.normalizeUserData(user)) || [];
+    return users.data?.map((user: any) => this.normalizeUserData(user)) || [];
 
     } catch (error) {
       console.error('Twitter user search error:', error)
