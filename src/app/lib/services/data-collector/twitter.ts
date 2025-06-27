@@ -67,6 +67,28 @@ export class TwitterService {
     }
   }
 
+  // async getUserTweets(userId: string, maxResults: number = 100) {
+  //   try {
+  //     const tweets = await this.client.v2.userTimeline(userId, {
+  //       max_results: maxResults,
+  //       'tweet.fields': [
+  //         'created_at',
+  //         'public_metrics',
+  //         'context_annotations',
+  //         'lang',
+  //       ],
+  //       exclude: ['retweets', 'replies'],
+  //     })
+
+  //     return (
+  //       tweets.data?.map((tweet: any) => this.normalizeTweetData(tweet)) || []
+  //     )
+  //   } catch (error) {
+  //     console.error('Twitter tweets error:', error)
+  //     throw new Error('Failed to get user tweets')
+  //   }
+  // }
+
   async getUserTweets(userId: string, maxResults: number = 100) {
     try {
       const tweets = await this.client.v2.userTimeline(userId, {
@@ -78,16 +100,17 @@ export class TwitterService {
           'lang',
         ],
         exclude: ['retweets', 'replies'],
-      })
-
+      });
+  
       return (
-        tweets.data?.map((tweet: any) => this.normalizeTweetData(tweet)) || []
-      )
+        tweets.tweets?.map((tweet: any) => this.normalizeTweetData(tweet)) || []
+      );
     } catch (error) {
-      console.error('Twitter tweets error:', error)
-      throw new Error('Failed to get user tweets')
+      console.error('Twitter tweets error:', error);
+      throw new Error('Failed to get user tweets');
     }
   }
+  
 
   async searchTweets(query: string, maxResults: number = 100) {
     try {
