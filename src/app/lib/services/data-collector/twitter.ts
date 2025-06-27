@@ -10,7 +10,7 @@ export class TwitterService {
     accessSecret?: string
   ) {
     const baseClient =
-      accessToken && accessSecretst
+      accessToken && accessSecret
         ? new TwitterApi({
             appKey: process.env.TWITTER_API_KEY!,
             appSecret: process.env.TWITTER_API_SECRET!,
