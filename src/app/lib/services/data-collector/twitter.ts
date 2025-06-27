@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TwitterApi } from 'twitter-api-v2'
+import { TwitterApi, TwitterApiReadOnly  } from 'twitter-api-v2'
 
 export class TwitterService {
-  private client: ReturnType<TwitterApi['readOnly']>
+  private client: TwitterApiReadOnly;
 
   constructor(
     bearerToken: string,
