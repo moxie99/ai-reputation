@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 5. Generate overall summary
-    let overallSummary = ''
+    let overallSummary: string | null = ''
     try {
       overallSummary = await openai.generateReportSummary(
         categories,
